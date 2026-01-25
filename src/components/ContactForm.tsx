@@ -1,58 +1,11 @@
-import React, { useState } from 'react';
-import styled from 'styled-components';
+import { useState, type FormEvent, type ChangeEvent } from 'react';
 
-/* FORM STYLES */
-const FormWrapper = styled.div`
-  h3 {
-    font-size: 26px;
-    font-weight: 600;
-    margin-bottom: 40px;
-  }
-`;
+const ContactForm = () => {
+  const [name, setName] = useState<string>('');
+  const [email, setEmail] = useState<string>('');
+  const [message, setMessage] = useState<string>('');
 
-const Form = styled.form`
-  display: flex;
-  flex-direction: column;
-  gap: 20px;
-`;
-
-const Input = styled.input`
-  padding: 15px;
-  border: 2px solid #e4e4e4;
-  color: #272727;
-  outline-color: black;
-`;
-
-const TextArea = styled.textarea`
-  padding: 15px;
-  border: 2px solid #e4e4e4;
-  font-size: 14px;
-  color: #272727;
-  outline-color: black;
-`;
-
-const Button = styled.button`
-  width: 20%;
-  background-color: black;
-  color: white;
-  border: none;
-  padding: 20px 5px;
-  text-transform: uppercase;
-  font-weight: 500;
-  font-size: 14px;
-  cursor: pointer;
-
-  @media (max-width: 450px) {
-    width: 50%;
-  }
-`;
-
-const ContactForm: React.FC = () => {
-  const [name, setName] = useState('');
-  const [email, setEmail] = useState('');
-  const [message, setMessage] = useState('');
-
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
     alert(
@@ -65,36 +18,45 @@ const ContactForm: React.FC = () => {
   };
 
   return (
-    <FormWrapper>
-      <h3>Get In Touch</h3>
+    <div>
+      <h3 className="text-[26px] font-semibold mb-[40px]">Get In Touch</h3>
 
-      <Form onSubmit={handleSubmit}>
-        <Input
+      <form onSubmit={handleSubmit} className="flex flex-col gap-[20px]">
+        <input
           type="text"
           placeholder="Name *"
           value={name}
-          onChange={(e) => setName(e.target.value)}
+          onChange={(e: ChangeEvent<HTMLInputElement>) => setName(e.target.value)}
           required
+          className="p-[15px] border-2 border-gray-200 text-[#272727] focus:outline-black"
         />
 
-        <Input
+        <input
           type="email"
           placeholder="Email address *"
           value={email}
-          onChange={(e) => setEmail(e.target.value)}
+          onChange={(e: ChangeEvent<HTMLInputElement>) => setEmail(e.target.value)}
           required
+          className="p-[15px] border-2 border-gray-200 text-[#272727] focus:outline-black"
         />
 
-        <TextArea
+        <textarea
           rows={10}
           placeholder="Your Message"
           value={message}
-          onChange={(e) => setMessage(e.target.value)}
+          onChange={(e: ChangeEvent<HTMLTextAreaElement>) => setMessage(e.target.value)}
+          className="p-[15px] border-2 border-gray-200 text-[14px] text-[#272727] focus:outline-black"
         />
 
-        <Button type="submit">Submit</Button>
-      </Form>
-    </FormWrapper>
+        <button
+          type="submit"
+          className="w-1/5 bg-black text-white border-none py-[20px] px-[5px] uppercase font-medium text-[14px] cursor-pointer
+                     max-[450px]:w-1/2"
+        >
+          Submit
+        </button>
+      </form>
+    </div>
   );
 };
 

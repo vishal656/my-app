@@ -1,22 +1,20 @@
 import { Outlet, useNavigation } from 'react-router-dom';
-import styled from 'styled-components';
-import Navbar  from '../components/Navbar';
-
-const MainSection = styled.section`
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 5rem 1rem;
-`;
-
-const HomeLayout: React.FC = () => {
+import { Header, Navbar, Loading } from '../components';
+const HomeLayout = () => {
   const navigation = useNavigation();
-
+  const isPageLoading = navigation.state === 'loading';
   return (
     <>
+      <Header />
       <Navbar />
-      <Outlet/>
+      {isPageLoading ? (
+        <Loading />
+      ) : (
+        <section className='align-element py-20'>
+          <Outlet />
+        </section>
+      )}
     </>
   );
 };
-
 export default HomeLayout;

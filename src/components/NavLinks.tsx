@@ -1,51 +1,32 @@
+import { useSelector } from 'react-redux';
 import { NavLink } from 'react-router-dom';
-import styled from 'styled-components';
 
-type LinkItem = {
-  id: number;
-  url: string;
-  text: string;
-};
-
-const links: LinkItem[] = [
+const links = [
   { id: 1, url: '/', text: 'home' },
   { id: 2, url: 'about', text: 'about' },
   { id: 3, url: 'products', text: 'products' },
   { id: 4, url: 'cart', text: 'cart' },
   { id: 5, url: 'checkout', text: 'checkout' },
   // { id: 6, url: 'orders', text: 'orders' },
-  { id: 7, url: 'contact', text: 'contact' },
+  { id: 6, url: 'contact', text: 'contact' },
 ];
 
-const ListItem = styled.li`
-  list-style: none;
-`;
-
-const StyledNavLink = styled(NavLink)`
-  text-transform: capitalize;
-  text-decoration: none;
-  font-weight: 500;
-  color: inherit;
-
-  &.active {
-    font-weight: 700;
-  }
-
-  &:hover {
-    text-decoration: underline;
-  }
-`;
-
-const NavLinks: React.FC = () => {
+const NavLinks = () => {
+  const user = useSelector((state) => state.userState.user);
   return (
     <>
-      {links.map(({ id, url, text }) => (
-        <ListItem key={id}>
-          <StyledNavLink to={url}>{text}</StyledNavLink>
-        </ListItem>
-      ))}
+      {links.map((link) => {
+        const { id, url, text } = link;
+        if ((url === 'checkout' || url === 'orders') && !user) return null;
+        return (
+          <li key={id}>
+            <NavLink className='capitalize' to={url}>
+              {text}
+            </NavLink>
+          </li>
+        );
+      })}
     </>
   );
 };
-
 export default NavLinks;

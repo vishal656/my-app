@@ -1,17 +1,9 @@
-/* Base reset (similar to Tailwind's preflight) */
-*,
-*::before,
-*::after {
-  box-sizing: border-box;
-  margin: 0;
-  padding: 0;
-}
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
 
-/* Utility replacement for .align-element */
-.align-element {
-  margin-left: auto;
-  margin-right: auto;
-  max-width: 72rem; /* max-w-6xl = 1152px = 72rem */
-  padding-left: 2rem; /* px-8 = 32px */
-  padding-right: 2rem;
+@layer components {
+  .align-element {
+    @apply mx-auto max-w-6xl px-8;
+  }
 }
