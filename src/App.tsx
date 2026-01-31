@@ -1,20 +1,21 @@
 import { RouterProvider, createBrowserRouter } from 'react-router-dom';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
+import { lazy, Suspense } from 'react';
 
-import {
-  About,
-  Cart,
-  Checkout,
-  Error,
-  HomeLayout,
-  Landing,
-  Login,
-  Orders,
-  Products,
-  Register,
-  SingleProduct,
-} from './pages';
+const About = lazy(() => import('./pages/About'));
+const Cart = lazy(() => import('./pages/Cart'));
+const Checkout = lazy(() => import('./pages/Checkout'));
+const Error = lazy(() => import('./pages/Error'));
+const HomeLayout = lazy(() => import('./pages/HomeLayout'));
+const Landing = lazy(() => import('./pages/Landing'));
+const Products = lazy(() => import('./pages/Products'));
+const Login = lazy(() => import('./pages/Login'));
+const Register = lazy(() => import('./pages/Register'));
+const SingleProduct = lazy(() => import('./pages/SingleProduct'));
+const Orders = lazy(() => import('./pages/Orders'));
+const AdminDashboard = lazy(() => import('./pages/AdminDashboard'));
+const ContactPage = lazy(() => import('./pages/ContactPage'));
 
 import { ErrorElement } from './components';
 
@@ -31,10 +32,7 @@ import { action as loginAction } from './pages/Login';
 import { action as checkoutAction } from './components/CheckoutForm';
 
 import { store } from './store';
-import ContactPage from './pages/ContactPage';
 import ProtectedRoute from './components/ProtectedRoute';
-import AdminDashboard from './pages/AdminDashboard';
-
 
 // --------------------
 // React Query Client
@@ -46,7 +44,6 @@ const queryClient = new QueryClient({
     },
   },
 });
-
 
 // --------------------
 // Router Configuration
@@ -105,13 +102,11 @@ const router = createBrowserRouter([
         path: 'contact',
         element: <ContactPage />,
       },
-
-      // Uncomment when needed
-      // {
-      //   path: 'orders',
-      //   element: <Orders />,
-      //   loader: ordersLoader(store, queryClient),
-      // },
+      {
+        path: 'orders',
+        element: <Orders />,
+        loader: ordersLoader(store, queryClient),
+      },
     ],
   },
   {
@@ -128,14 +123,15 @@ const router = createBrowserRouter([
   },
 ]);
 
-
 // --------------------
 // App Component
 // --------------------
 const App = () => {
   return (
     <QueryClientProvider client={queryClient}>
-      <RouterProvider router={router} />
+      <Suspense fallback={<div className="loading">Loading...</div>}>
+        <RouterProvider router={router} />
+      </Suspense>
       <ReactQueryDevtools initialIsOpen={false} />
     </QueryClientProvider>
   );

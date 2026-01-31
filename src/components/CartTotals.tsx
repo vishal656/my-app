@@ -1,6 +1,6 @@
 import { useSelector } from 'react-redux';
 import { formatPrice } from '../utils';
-
+import { memo } from 'react';
 const CartTotals = () => {
   const { cartTotal, shipping, tax, orderTotal } = useSelector((state) => state.cartState);
 
@@ -31,4 +31,4 @@ const CartTotals = () => {
     </div>
   );
 };
-export default CartTotals;
+export default memo(CartTotals);

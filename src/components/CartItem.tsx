@@ -1,6 +1,7 @@
 import { formatPrice, generateAmountOptions } from '../utils';
 import { removeItem, editItem } from '../features/cart/cartSlice';
 import { useDispatch } from 'react-redux';
+import { memo } from 'react';
 const CartItem = ({ cartItem }) => {
   const dispatch = useDispatch();
 
@@ -35,7 +36,7 @@ const CartItem = ({ cartItem }) => {
         {/* AMOUNT */}
         <div className="form-control max-w-xs">
           <label htmlFor="amount" className="label p-0">
-            <span className="label-text">Amount</span>
+            <span className="label-text">Quantity</span>
           </label>
           <select
             name="amount"
@@ -61,4 +62,4 @@ const CartItem = ({ cartItem }) => {
     </article>
   );
 };
-export default CartItem;
+export default memo(CartItem);

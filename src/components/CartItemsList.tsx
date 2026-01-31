@@ -1,6 +1,6 @@
 import { useSelector } from 'react-redux';
 import CartItem from './CartItem';
-
+import { memo } from 'react';
 const CartItemsList = () => {
   const cartItems = useSelector((state) => state.cartState.cartItems);
   return (
@@ -11,4 +11,4 @@ const CartItemsList = () => {
     </>
   );
 };
-export default CartItemsList;
+export default memo(CartItemsList);

@@ -1,5 +1,6 @@
 import { Link, useLoaderData } from 'react-router-dom';
 import { formatPrice } from '../utils';
+import { memo } from 'react';
 
 const ProductsList = () => {
   const { products } = useLoaderData();
@@ -31,4 +32,4 @@ const ProductsList = () => {
     </div>
   );
 };
-export default ProductsList;
+export default memo(ProductsList);

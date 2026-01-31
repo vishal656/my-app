@@ -1,9 +1,8 @@
-import { useLoaderData } from 'react-router-dom';
-import { formatPrice, customFetch, generateAmountOptions } from '../utils';
-import { Link } from 'react-router-dom';
 import { useState } from 'react';
 import { useDispatch } from 'react-redux';
+import { Link, useLoaderData } from 'react-router-dom';
 import { addItem } from '../features/cart/cartSlice';
+import { customFetch, formatPrice, generateAmountOptions } from '../utils';
 
 const singleProductQuery = (id) => {
   return {
@@ -92,7 +91,7 @@ const SingleProduct = () => {
           {/* AMOUNT */}
           <div className="form-control w-full max-w-xs">
             <label className="label" htmlFor="amount">
-              <h4 className="text-md font-medium -tracking-wider capitalize">amount</h4>
+              <h4 className="text-md font-medium -tracking-wider capitalize">Quantity</h4>
             </label>
             <select
               className="select select-secondary select-bordered select-md"

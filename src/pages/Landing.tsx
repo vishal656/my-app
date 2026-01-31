@@ -1,3 +1,4 @@
+import { memo } from 'react';
 import { FeaturedProducts, Hero } from '../components';
 import Wrapper from '../components/Wrapper';
 
@@ -21,10 +22,13 @@ export const loader = (queryClient) => async () => {
 const Landing = () => {
   return (
     <>
-      <Hero />
-      <FeaturedProducts />
-      <Wrapper/>
+      <MemoHero />
+      <MemoFeaturedProducts />
+      <Wrapper />
     </>
   );
 };
+
+const MemoHero = memo(Hero);
+const MemoFeaturedProducts = memo(FeaturedProducts);
 export default Landing;

@@ -1,13 +1,15 @@
+import { memo } from 'react';
 import { Outlet, useNavigation } from 'react-router-dom';
-import { Header, Navbar, Loading } from '../components';
+import { Header, Loading, Navbar } from '../components';
 import Footer from '../components/Footer';
+
 const HomeLayout = () => {
   const navigation = useNavigation();
   const isPageLoading = navigation.state === 'loading';
   return (
     <>
-      <Header />
-      <Navbar />
+      <MemoHeader />
+      <MemoNavbar />
       {isPageLoading ? (
         <Loading />
       ) : (
@@ -15,8 +17,12 @@ const HomeLayout = () => {
           <Outlet />
         </section>
       )}
-      <Footer />
+      <MemoFooter />
     </>
   );
 };
+
+const MemoHeader = memo(Header);
+const MemoNavbar = memo(Navbar);
+const MemoFooter = memo(Footer);
 export default HomeLayout;
