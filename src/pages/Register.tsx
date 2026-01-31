@@ -6,7 +6,18 @@ import { toast } from 'react-toastify';
 export const action = async ({ request }) => {
   const formData = await request.formData();
   const data = Object.fromEntries(formData);
+  const { username, email, password } = data;
 
+// Field validation
+const errors: Record<string, string> = {};
+if (!username) errors.username = 'Username is required';
+if (!email) errors.email = 'Email is required';
+if (!password) errors.password = 'Password is required';
+
+if (Object.keys(errors).length > 0) {
+  toast.error('Please fill in all required fields');
+  return { errors, values: data }; // Send back errors & values
+}
   try {
     const response = await customFetch.post('/auth/local/register', data);
     toast.success('account created successfully');

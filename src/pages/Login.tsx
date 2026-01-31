@@ -6,10 +6,21 @@ import { loginUser } from '../features/user/userSlice';
 import { useDispatch } from 'react-redux';
 
 export const action =
-  (store) =>
+  (store: any) =>
   async ({ request }) => {
     const formData = await request.formData();
     const data = Object.fromEntries(formData);
+    const { identifier, password } = data;
+
+    // Frontend validation
+    const errors: Record<string, string> = {};
+    if (!identifier) errors.identifier = 'Email is required';
+    if (!password) errors.password = 'Password is required';
+
+    if (Object.keys(errors).length > 0) {
+      toast.error('Please fill in all required fields');
+      return { errors, values: data };
+    }
 
     try {
       const response = await customFetch.post('/auth/local', data);
