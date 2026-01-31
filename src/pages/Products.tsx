@@ -3,8 +3,7 @@ import { customFetch } from '../utils';
 const url = '/products';
 
 const allProductsQuery = (queryParams) => {
-  const { search, category, company, sort, price, shipping, page } =
-    queryParams;
+  const { search, category, company, sort, price, shipping, page } = queryParams;
 
   return {
     queryKey: [
@@ -27,13 +26,9 @@ const allProductsQuery = (queryParams) => {
 export const loader =
   (queryClient) =>
   async ({ request }) => {
-    const params = Object.fromEntries([
-      ...new URL(request.url).searchParams.entries(),
-    ]);
+    const params = Object.fromEntries([...new URL(request.url).searchParams.entries()]);
 
-    const response = await queryClient.ensureQueryData(
-      allProductsQuery(params)
-    );
+    const response = await queryClient.ensureQueryData(allProductsQuery(params));
     const products = response.data.data;
     const meta = response.data.meta;
     return { products, meta, params };

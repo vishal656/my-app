@@ -9,6 +9,7 @@ const links = [
   { id: 5, url: 'checkout', text: 'checkout' },
   // { id: 6, url: 'orders', text: 'orders' },
   { id: 6, url: 'contact', text: 'contact' },
+  { id: 7, url: 'admin', text: 'admin' },
 ];
 
 const NavLinks = () => {
@@ -17,10 +18,18 @@ const NavLinks = () => {
     <>
       {links.map((link) => {
         const { id, url, text } = link;
-        if ((url === 'checkout' || url === 'orders') && !user) return null;
+
+        // Hide admin link if user is not admin
+        if (url === 'admin' && user?.role !== 'admin') return false;
+
+        // Hide cart & checkout for admin
+        if ((url === 'cart' || url === 'checkout') && user?.role === 'admin') return false;
+
+        // Hide checkout/orders if user is not logged in
+        if ((url === 'checkout' || url === 'orders') && !user) return false;
         return (
           <li key={id}>
-            <NavLink className='capitalize' to={url}>
+            <NavLink className="capitalize" to={url}>
               {text}
             </NavLink>
           </li>

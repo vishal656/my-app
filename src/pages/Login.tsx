@@ -13,13 +13,17 @@ export const action =
 
     try {
       const response = await customFetch.post('/auth/local', data);
-      store.dispatch(loginUser(response.data));
+      store.dispatch(
+        loginUser({
+          ...response.data,
+          role: 'user', // default role after normal login
+        }),
+      );
       toast.success('logged in successfully');
       return redirect('/');
     } catch (error) {
       const errorMessage =
-        error?.response?.data?.error?.message ||
-        'please double check your credentials';
+        error?.response?.data?.error?.message || 'please double check your credentials';
       toast.error(errorMessage);
       return null;
     }
@@ -35,7 +39,12 @@ const Login = () => {
         identifier: 'test@test.com',
         password: 'secret',
       });
-      dispatch(loginUser(response.data));
+      dispatch(
+        loginUser({
+          ...response.data,
+          role: 'user',
+        }),
+      );
       toast.success('welcome guest user');
       navigate('/');
     } catch (error) {
@@ -44,31 +53,39 @@ const Login = () => {
     }
   };
 
+  const loginAsAdmin = () => {
+    dispatch(
+      loginUser({
+        user: {
+          username: 'Admin',
+          email: 'admin@site.com',
+        },
+        jwt: 'fake-admin-token',
+        role: 'admin',
+      }),
+    );
+    toast.success('Admin login success');
+    navigate('/');
+  };
+
   return (
-    <section className='h-screen grid place-items-center'>
-      <Form
-        method='post'
-        className='card w-96  p-8 bg-base-100 shadow-lg flex flex-col gap-y-4'
-      >
-        <h4 className='text-center text-3xl font-bold'>Login</h4>
-        <FormInput type='email' label='email' name='identifier' />
-        <FormInput type='password' label='password' name='password' />
-        <div className='mt-4'>
-          <SubmitBtn text='login' />
+    <section className="h-screen grid place-items-center">
+      <Form method="post" className="card w-96  p-8 bg-base-100 shadow-lg flex flex-col gap-y-4">
+        <h4 className="text-center text-3xl font-bold">Login</h4>
+        <FormInput type="email" label="email" name="identifier" />
+        <FormInput type="password" label="password" name="password" />
+        <div className="mt-4">
+          <SubmitBtn text="login" />
         </div>
-        <button
-          type='button'
-          className='btn btn-secondary btn-block'
-          onClick={loginAsGuestUser}
-        >
+        <button type="button" className="btn btn-secondary btn-block" onClick={loginAsGuestUser}>
           guest user
         </button>
-        <p className='text-center'>
+        <button type="button" className="btn btn-accent btn-block" onClick={loginAsAdmin}>
+          Admin Login
+        </button>
+        <p className="text-center">
           Not a member yet?{' '}
-          <Link
-            to='/register'
-            className='ml-2 link link-hover link-primary capitalize'
-          >
+          <Link to="/register" className="ml-2 link link-hover link-primary capitalize">
             register
           </Link>
         </p>

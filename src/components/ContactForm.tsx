@@ -8,9 +8,7 @@ const ContactForm = () => {
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    alert(
-      `Thank You ${name} for Contacting Us.\n\nEmail: ${email}\nMessage: ${message}`
-    );
+    alert(`Thank You ${name} for Contacting Us.\n\nEmail: ${email}\nMessage: ${message}`);
 
     setName('');
     setEmail('');

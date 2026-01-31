@@ -11,8 +11,7 @@ export const action =
     const formData = await request.formData();
     const { name, address } = Object.fromEntries(formData);
     const user = store.getState().userState.user;
-    const { cartItems, orderTotal, numItemsInCart } =
-      store.getState().cartState;
+    const { cartItems, orderTotal, numItemsInCart } = store.getState().cartState;
 
     const info = {
       name,
@@ -31,7 +30,7 @@ export const action =
           headers: {
             Authorization: `Bearer ${user.token}`,
           },
-        }
+        },
       );
       queryClient.removeQueries(['orders']);
       store.dispatch(clearCart());
@@ -40,8 +39,7 @@ export const action =
     } catch (error) {
       console.log(error);
       const errorMessage =
-        error?.response?.data?.error?.message ||
-        'there was an error placing your order';
+        error?.response?.data?.error?.message || 'there was an error placing your order';
       toast.error(errorMessage);
       if (error?.response?.status === 401 || 403) return redirect('/login');
       return null;
@@ -50,12 +48,12 @@ export const action =
 
 const CheckoutForm = () => {
   return (
-    <Form method='POST' className='flex flex-col gap-y-4'>
-      <h4 className='font-medium text-xl capitalize'>shipping information</h4>
-      <FormInput label='first name' name='name' type='text' />
-      <FormInput label='address' name='address' type='text' />
-      <div className='mt-4'>
-        <SubmitBtn text='place your order' />
+    <Form method="POST" className="flex flex-col gap-y-4">
+      <h4 className="font-medium text-xl capitalize">shipping information</h4>
+      <FormInput label="first name" name="name" type="text" />
+      <FormInput label="address" name="address" type="text" />
+      <div className="mt-4">
+        <SubmitBtn text="place your order" />
       </div>
     </Form>
   );

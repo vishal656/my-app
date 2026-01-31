@@ -1,6 +1,7 @@
 import { RouterProvider, createBrowserRouter } from 'react-router-dom';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
+
 import {
   About,
   Cart,
@@ -17,27 +18,39 @@ import {
 
 import { ErrorElement } from './components';
 
-// loaders
+// Loaders
 import { loader as landingLoader } from './pages/Landing';
 import { loader as singleProductLoader } from './pages/SingleProduct';
 import { loader as productsLoader } from './pages/Products';
 import { loader as checkoutLoader } from './pages/Checkout';
 import { loader as ordersLoader } from './pages/Orders';
-// actions
+
+// Actions
 import { action as registerAction } from './pages/Register';
 import { action as loginAction } from './pages/Login';
 import { action as checkoutAction } from './components/CheckoutForm';
+
 import { store } from './store';
 import ContactPage from './pages/ContactPage';
+import ProtectedRoute from './components/ProtectedRoute';
+import AdminDashboard from './pages/AdminDashboard';
 
+
+// --------------------
+// React Query Client
+// --------------------
 const queryClient = new QueryClient({
   defaultOptions: {
     queries: {
-      staleTime: 1000 * 60 * 5,
+      staleTime: 1000 * 60 * 5, // 5 minutes
     },
   },
 });
 
+
+// --------------------
+// Router Configuration
+// --------------------
 const router = createBrowserRouter([
   {
     path: '/',
@@ -47,20 +60,20 @@ const router = createBrowserRouter([
       {
         index: true,
         element: <Landing />,
-        errorElement: <ErrorElement />,
         loader: landingLoader(queryClient),
+        errorElement: <ErrorElement />,
       },
       {
         path: 'products',
         element: <Products />,
-        errorElement: <ErrorElement />,
         loader: productsLoader(queryClient),
+        errorElement: <ErrorElement />,
       },
       {
         path: 'products/:id',
         element: <SingleProduct />,
-        errorElement: <ErrorElement />,
         loader: singleProductLoader(queryClient),
+        errorElement: <ErrorElement />,
       },
       {
         path: 'cart',
@@ -72,35 +85,53 @@ const router = createBrowserRouter([
       },
       {
         path: 'checkout',
-        element: <Checkout />,
+        element: (
+          <ProtectedRoute role="user">
+            <Checkout />
+          </ProtectedRoute>
+        ),
         loader: checkoutLoader(store),
         action: checkoutAction(store, queryClient),
       },
+      {
+        path: 'admin',
+        element: (
+          <ProtectedRoute role="admin">
+            <AdminDashboard />
+          </ProtectedRoute>
+        ),
+      },
+      {
+        path: 'contact',
+        element: <ContactPage />,
+      },
+
+      // Uncomment when needed
       // {
       //   path: 'orders',
       //   element: <Orders />,
       //   loader: ordersLoader(store, queryClient),
       // },
-      {
-        path: 'contact',
-        element: <ContactPage />,
-      },
     ],
   },
   {
     path: '/login',
     element: <Login />,
-    errorElement: <Error />,
     action: loginAction(store),
+    errorElement: <Error />,
   },
   {
     path: '/register',
     element: <Register />,
-    errorElement: <Error />,
     action: registerAction,
+    errorElement: <Error />,
   },
 ]);
 
+
+// --------------------
+// App Component
+// --------------------
 const App = () => {
   return (
     <QueryClientProvider client={queryClient}>
@@ -109,4 +140,5 @@ const App = () => {
     </QueryClientProvider>
   );
 };
+
 export default App;

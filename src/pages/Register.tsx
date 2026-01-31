@@ -13,7 +13,7 @@ export const action = async ({ request }) => {
     return redirect('/login');
   } catch (error) {
     const errorMessage =
-      error?.response?.data?.error?.message ||
+      error?.response?.data?.error?.message || 
       'please double check your credentials';
     toast.error(errorMessage);
     return null;

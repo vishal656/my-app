@@ -7,8 +7,19 @@ const Filters = () => {
   const { meta, params } = useLoaderData();
   const { search, company, category, shipping, order, price } = params;
 
+  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault(); // prevent SPA navigation
+    const form = event.currentTarget; // currentTarget is the form element
+    const formData = new FormData(form);
+    const query = new URLSearchParams(formData as any).toString(); // <-- cast to any
+    window.location.href = `/products?${query}`; // full page reload with query
+  };
+
   return (
-    <Form className='bg-base-200 rounded-md px-8 py-4 grid gap-x-4  gap-y-8 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 items-center'>
+    <Form
+      onSubmit={handleSubmit} // <-- minimal change here
+      className="bg-base-200 rounded-md px-8 py-4 grid gap-x-4 gap-y-8 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 items-center"
+    >
       {/* SEARCH */}
       <FormInput
         type='search'

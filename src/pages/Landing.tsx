@@ -1,4 +1,5 @@
 import { FeaturedProducts, Hero } from '../components';
+import Wrapper from '../components/Wrapper';
 
 import { customFetch } from '../utils';
 const url = '/products?featured=true';
@@ -22,6 +23,7 @@ const Landing = () => {
     <>
       <Hero />
       <FeaturedProducts />
+      <Wrapper/>
     </>
   );
 };
