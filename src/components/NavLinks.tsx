@@ -10,6 +10,7 @@ const links = [
   { id: 6, url: 'orders', text: 'orders' },
   { id: 7, url: 'contact', text: 'contact' },
   { id: 8, url: 'admin', text: 'admin' },
+  { id: 9, url: 'vendor', text: 'vendor' },
 ];
 
 const NavLinks = () => {
@@ -22,8 +23,15 @@ const NavLinks = () => {
         // Hide admin link if user is not admin
         if (url === 'admin' && user?.role !== 'admin') return false;
 
-        // Hide cart & checkout for admin
-        if ((url === 'cart' || url === 'checkout') && user?.role === 'admin') return false;
+        // Hide vendor link if not vendor
+        if (url === 'vendor' && user?.role !== 'vendor') return false;
+
+        // Hide cart, checkout, orders for admin & vendor
+        if (
+          (url === 'cart' || url === 'checkout' || url === 'orders' || url === '/' || url === 'products') &&
+          (user?.role === 'admin' || user?.role === 'vendor')
+        )
+          return null;
 
         // Hide checkout/orders if user is not logged in
         if ((url === 'checkout' || url === 'orders') && !user) return false;

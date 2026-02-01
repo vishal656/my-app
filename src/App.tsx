@@ -16,6 +16,7 @@ const SingleProduct = lazy(() => import('./pages/SingleProduct'));
 const Orders = lazy(() => import('./pages/Orders'));
 const AdminDashboard = lazy(() => import('./pages/AdminDashboard'));
 const ContactPage = lazy(() => import('./pages/ContactPage'));
+const VendorDashboard = lazy(() => import('./pages/VendorDashboard'));
 
 import { ErrorElement } from './components';
 
@@ -91,6 +92,15 @@ const router = createBrowserRouter([
         action: checkoutAction(store, queryClient),
       },
       {
+        path: 'contact',
+        element: <ContactPage />,
+      },
+      {
+        path: 'orders',
+        element: <Orders />,
+        loader: ordersLoader(store, queryClient),
+      },
+      {
         path: 'admin',
         element: (
           <ProtectedRoute role="admin">
@@ -99,13 +109,12 @@ const router = createBrowserRouter([
         ),
       },
       {
-        path: 'contact',
-        element: <ContactPage />,
-      },
-      {
-        path: 'orders',
-        element: <Orders />,
-        loader: ordersLoader(store, queryClient),
+        path: 'vendor',
+        element: (
+          <ProtectedRoute role="vendor">
+            <VendorDashboard />
+          </ProtectedRoute>
+        ),
       },
     ],
   },

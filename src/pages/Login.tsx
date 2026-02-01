@@ -76,7 +76,22 @@ const Login = () => {
       }),
     );
     toast.success('Admin login success');
-    navigate('/');
+    navigate('/admin');
+  };
+
+  const loginAsVendor = () => {
+    dispatch(
+      loginUser({
+        user: {
+          username: 'Vendor',
+          email: 'vendor@shop.com',
+        },
+        jwt: 'fake-vendor-token',
+        role: 'vendor',
+      }),
+    );
+    toast.success('Vendor login success');
+    navigate('/vendor');
   };
 
   return (
@@ -93,6 +108,9 @@ const Login = () => {
         </button>
         <button type="button" className="btn btn-accent btn-block" onClick={loginAsAdmin}>
           Admin Login
+        </button>
+        <button type="button" className="btn btn-info btn-block" onClick={loginAsVendor}>
+          Vendor Login
         </button>
         <p className="text-center">
           Not a member yet?{' '}

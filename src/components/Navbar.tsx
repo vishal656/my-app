@@ -52,7 +52,7 @@ const Navbar = () => {
             <BsMoonFill className="swap-off h-4 w-4" />
           </label>
           {/* CART LINK */}
-          {user?.role !== 'admin' && (
+          {(user?.role !== 'admin' && user?.role !=='vendor') && (
             <NavLink to="/cart" className="btn btn-ghost btn-circle btn-md ml-4">
               <div className="indicator">
                 <BsCart3 className="h-6 w-6" />
@@ -65,6 +65,11 @@ const Navbar = () => {
           {user?.role === 'admin' && (
             <NavLink to="/admin" className="btn btn-sm btn-accent ml-2">
               Admin Dashboard
+            </NavLink>
+          )}
+          {user?.role === 'vendor' && (
+            <NavLink to="/vendor" className="btn btn-sm btn-secondary ml-2">
+              Vendor Dashboard
             </NavLink>
           )}
         </div>
