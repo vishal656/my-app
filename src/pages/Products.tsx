@@ -1,5 +1,7 @@
 import { Filters, PaginationContainer, ProductsContainer } from '../components';
 import { customFetch } from '../utils';
+import { getProductStock } from '../utils/stock';
+
 const url = '/products';
 
 const allProductsQuery = (queryParams) => {
@@ -29,8 +31,16 @@ export const loader =
     const params = Object.fromEntries([...new URL(request.url).searchParams.entries()]);
 
     const response = await queryClient.ensureQueryData(allProductsQuery(params));
-    const products = response.data.data;
+
+    const products = response.data.data.map((product) => ({
+      ...product,
+      // 👇 frontend simulated stock
+      // stock: Math.floor(Math.random() * 6), // 0–5
+      stock: getProductStock(response.data.data.id),
+    }));
+
     const meta = response.data.meta;
+
     return { products, meta, params };
   };
 
